@@ -1,0 +1,60 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// generator erd {
+//   provider = "prisma-erd-generator"
+//   output   = "./ERD.png"
+//   theme    = "forest"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// model User {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   email     String   @unique
+//   password  String
+//   name      String?
+// }
+
+// model Checklist {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   title     String
+//   complete  Boolean
+// }
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String      @id @default(uuid())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  email      String      @unique
+  password   String
+  name       String?
+  checklists Checklist[]
+}
+
+model Checklist {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  title     String
+  complete  Boolean
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+}
